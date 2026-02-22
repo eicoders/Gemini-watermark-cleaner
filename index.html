@@ -1,1 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jar Gemini Cleaner | Instant AI Removal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="public/coi-serviceworker.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+</head>
+<body class="bg-[#0f172a] text-slate-200 min-h-screen flex flex-col items-center p-6">
 
+    <header class="mb-10 text-center">
+        <h1 class="text-4xl font-black bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            JAR GEMINI CLEANER
+        </h1>
+        <p class="text-slate-400 mt-2 text-sm uppercase tracking-widest">Powered by AI • Client-Side • Secure</p>
+    </header>
+
+    <main class="w-full max-w-3xl bg-slate-800/50 backdrop-blur-xl border border-slate-700 p-8 rounded-3xl shadow-2xl">
+        
+        <div id="drop-zone" class="border-2 border-dashed border-slate-600 rounded-2xl p-12 text-center hover:border-blue-500 hover:bg-slate-700/30 transition-all cursor-pointer group">
+            <input type="file" id="file-input" class="hidden" accept="image/*">
+            <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">🖼️</div>
+            <p class="text-lg font-medium">Drop Gemini Image or <span class="text-blue-400">Select File</span></p>
+            <p class="text-xs text-slate-500 mt-2 font-mono">Max size: 10MB | Format: PNG/JPG</p>
+        </div>
+
+        <div id="preview-area" class="hidden mt-8 space-y-6">
+            <div class="relative rounded-xl overflow-hidden border border-slate-600 shadow-inner">
+                <canvas id="canvas" class="w-full h-auto block bg-slate-900"></canvas>
+                <div id="loader" class="hidden absolute inset-0 bg-slate-900/80 flex items-center justify-center backdrop-blur-sm">
+                    <div class="flex flex-col items-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                        <p class="mt-4 text-blue-400 font-mono text-sm tracking-tighter">AI PROCESSING...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button id="clean-btn" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-10 rounded-xl transition-all shadow-lg shadow-blue-900/20 active:scale-95">
+                    ✨ CLEAN WATERMARK
+                </button>
+                <a id="download-link" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 px-10 rounded-xl text-center transition-all shadow-lg shadow-emerald-900/20">
+                    ⬇️ DOWNLOAD
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-auto py-6 text-slate-500 text-xs">
+        &copy; 2026 JAR FANMADE - EICODERS REPO
+    </footer>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
