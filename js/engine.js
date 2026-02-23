@@ -1,40 +1,46 @@
-export async function runInference(inputCanvas) {
-    const ctx = inputCanvas.getContext('2d');
-    const width = inputCanvas.width;
-    const height = inputCanvas.height;
+import { preprocess, postprocess } from './utils.js';
+import { getWatermarkCoordinates, generateGeminiMask } from './detector.js';
 
-    // 1. Initialize ONNX Session (WebGPU preferred)
-    const session = await ort.InferenceSession.create('./models/lama_quantized.onnx', {
-        executionProviders: ['webgpu', 'wasm']
+let session = null;
+
+export async function runInference(canvas) {
+    const ctx = canvas.getContext('2d');
+    
+    // 1. Sirf Inpainting model load karein (Lama)
+    if (!session) {
+        try {
+            session = await ort.InferenceSession.create('./models/lama_quantized.onnx', {
+                executionProviders: ['webgpu', 'wasm'],
+                graphOptimizationLevel: 'all'
+            });
+        } catch (e) {
+            console.error("Model load fail:", e);
+            throw new Error("AI Model load nahi ho paya.");
+        }
+    }
+
+    const coords = getWatermarkCoordinates(canvas.width, canvas.height);
+    
+    // 2. Patch nikaalein
+    const imagePatchData = ctx.getImageData(coords.x, coords.y, coords.w, coords.h);
+    
+    // 3. Mask generate karein (Detector.js se)
+    const maskPatchData = generateGeminiMask(coords.w, coords.h);
+
+    // 4. AI Processing
+    const imageTensor = preprocess(imagePatchData);
+    const maskTensor = preprocess(maskPatchData);
+
+    const results = await session.run({
+        image: imageTensor,
+        mask: maskTensor
     });
 
-    // 2. Patch logic: Gemini logo is usually in bottom-right
-    // We take a 256x256 patch for <1sec speed
-    const patchSize = 256;
-    const patchX = width - patchSize;
-    const patchY = height - patchSize;
+    const outputTensor = results.output; 
 
-    // Get Image Data from Patch
-    const imageData = ctx.getImageData(patchX, patchY, patchSize, patchSize);
-    
-    // 3. Create a Mask (Pre-defined for Gemini Logo location within patch)
-    // For "Fully Automatic", we use a hardcoded mask for that corner
-    const maskData = createGeminiMask(patchSize);
+    // 5. Result wapas canvas par chipkayein
+    const cleanedImageData = postprocess(outputTensor, coords.w, coords.h);
+    ctx.putImageData(cleanedImageData, coords.x, coords.y);
 
-    // 4. Convert to Tensors & Run Model
-    // (Note: Implementation details for tensor conversion go here)
-    // For now, we simulate the inference result
-    await new Promise(r => setTimeout(r, 600)); // Simulating 0.6s processing
-
-    // Mock result drawing (In actual, you'd put the model output back)
-    // ctx.putImageData(modelOutput, patchX, patchY);
-
-    return inputCanvas;
-}
-
-function createGeminiMask(size) {
-    // Logic to create 256x256 alpha mask
-    const mask = new Uint8Array(size * size);
-    // Fill the mask area where Gemini logo usually is
-    return mask;
+    return canvas;
 }
