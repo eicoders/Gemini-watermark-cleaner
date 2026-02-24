@@ -14,6 +14,9 @@ module.exports = async function(req, res) {
         formData.append("mask_image", new Blob([maskBuffer]), "mask.png");
 
         // Using a more stable model
+        // Naya Model jo abhi Free API par active hai
+const response = await fetch("https://api-inference.huggingface.co/models/botp/stable-diffusion-v1-5-inpainting", {
+    
         const response = await fetch("https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-inpainting", {
             method: 'POST',
             headers: { 'Authorization': token },
