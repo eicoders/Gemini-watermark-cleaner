@@ -64,7 +64,7 @@ fileInput.addEventListener('change', async (e) => {
             body: formData
         });
 
-        if (!response.ok) throw new Error("API Limit reached or Invalid Key");
+        
 
         // 4. Handle Result
         const resultBlob = await response.blob();
