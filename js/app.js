@@ -1,5 +1,5 @@
 // Stability AI Configuration
-const API_KEY = "sk-BuEOKN2B0frfYB7oNdBu8P1YOnyrDHCJuGawi1eUPu5x7caV";
+const API_KEY = "sk-lL9XB1pydaGLEnCsNsufJ65N29N0mqugJT46C3QqrZNUmef8";
 
 const fileInput = document.getElementById('file-input');
 const dropZone = document.getElementById('drop-zone');
