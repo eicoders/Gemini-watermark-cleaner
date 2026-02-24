@@ -1,5 +1,5 @@
 // Stability AI Configuration
-const API_KEY = "sk-lL9XB1pydaGLEnCsNsufJ65N29N0mqugJT46C3QqrZNUmef8";
+const API_KEY = "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";
 
 const fileInput = document.getElementById('file-input');
 const dropZone = document.getElementById('drop-zone');
@@ -64,7 +64,7 @@ fileInput.addEventListener('change', async (e) => {
             body: formData
         });
 
-                if (!response.ok) throw new Error("API Limit reached or Invalid Key");
+        if (!response.ok) throw new Error("API Limit reached or Invalid Key");
 
         // 4. Handle Result
         const resultBlob = await response.blob();
