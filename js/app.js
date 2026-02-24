@@ -1,5 +1,7 @@
 // STABLE INPAINTING MODEL
-const API_URL = "https://api-inference.huggingface.co/models/runwayml/stable-diffusion-inpainting";
+// CORS Proxy ke through direct bypass
+const API_URL = "https://corsproxy.io/?https://api-inference.huggingface.co/models/runwayml/stable-diffusion-inpainting";
+
 
 const fileInput = document.getElementById('file-input');
 const uploadBox = document.getElementById('upload-box');
